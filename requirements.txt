@@ -1,2 +1,2 @@
 streamlit
-"snowflake-snowpark-python[pandas]"
+snowflake-snowpark-python[pandas]
