@@ -4,6 +4,8 @@ from snowflake.snowpark.session import Session
 import snowflake.snowpark.types as T
 import snowflake.snowpark.functions as F
 import pandas as pd
+from huggingface_hub import HfApi, ModelFilter
+from huggingface_hub import hf_hub_download
 
 st.set_page_config(layout="wide")
 
@@ -73,6 +75,29 @@ with sidebar:
             load_data(selected_database,selected_schema,selected_view_table)
         else:
             selected_table = st.selectbox('Table:', ['NO TABLE/VIEW AVAILABLE'])
+
+        api = HfApi()
+
+        model_id = 'cardiffnlp/twitter-xlm-roberta-base-sentiment'
+        model_files = api.list_repo_files(repo_id='cardiffnlp/twitter-xlm-roberta-base-sentiment')
+
+        # remove tensorflow model, keep pytorch model
+        model_files = [
+            'config.json',
+            'pytorch_model.bin',
+            'sentencepiece.bpe.model',
+            'special_tokens_map.json'
+        ]
+
+        local_files = []
+        for file in model_files:
+            local_file = hf_hub_download(
+                repo_id=model_id,
+                filename=file)
+            local_files.append(local_file)
+        local_files
+        st.write(local_files)
+
 
 data_view = st.expander('Data View', expanded=True)
 with data_view:
