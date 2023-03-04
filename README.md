@@ -1,1 +1,1 @@
-# streamlit_snowfake_hugginface
+# Deploy Huggingface Models via Streamlit in Snowflake
